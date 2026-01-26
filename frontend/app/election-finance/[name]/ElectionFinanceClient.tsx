@@ -4,6 +4,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { Box, Heading, HStack, Stack, Text, VStack } from '@chakra-ui/react';
 import type { BarDatum } from '@nivo/bar';
 import { ResponsiveBar } from '@nivo/bar';
+import { notFound } from 'next/navigation';
 import { BoardContainer } from '@/components/BoardContainer';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
@@ -21,8 +22,13 @@ function formatCurrency(amount: number): string {
 }
 
 export function ElectionFinanceClient({ data }: { data: EfData }) {
-  const { isAuthenticated } = useAuth0();
-  if (!isAuthenticated) return null;
+  const { isAuthenticated, isLoading } = useAuth0();
+  if (isLoading) {
+    return null;
+  }
+  if (!isAuthenticated) {
+    notFound();
+  }
 
   const metadata = data.metadata;
   const transactions = [...data.transactions].sort((a, b) => {
