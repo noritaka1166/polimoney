@@ -31,7 +31,6 @@ type DataLink = {
 };
 
 export function BoardChart({ transactions, categories }: Props) {
-  // Flowを生成
   const computedFlows = useMemo(() => {
     if (!categories) {
       return [];
@@ -40,7 +39,6 @@ export function BoardChart({ transactions, categories }: Props) {
     return flows;
   }, [transactions, categories]);
 
-  // flowsがない場合は空のデータを返す
   if (computedFlows.length === 0) {
     return (
       <Box w={'full'} h={'600px'}>
@@ -57,11 +55,9 @@ export function BoardChart({ transactions, categories }: Props) {
     })),
     links: computedFlows
       .map((item) => {
-        // 総収入ノードはリンクを作らない
         if (item.name === '総収入') {
           return null;
         }
-        // parentがnullやundefinedの場合はリンクを作らない
         if (!item.parent) {
           return null;
         }
@@ -119,13 +115,11 @@ const CustomLabelsLayer = ({
       {nodes.map((node) => {
         const nodeWidth = node.x1 - node.x0;
         const nodeHeight = node.y1 - node.y0;
-        // ラベル背景のサイズ計算
         const textPadding = 10;
         const approxCharWidth = 7;
         const labelWidth =
           node.label.length * approxCharWidth + textPadding * 2;
         const labelHeight = 30;
-        // ノードの右側または左側にラベルを配置するためのオフセット計算
         let labelX: number;
         let labelY: number;
         if (node.id === '総収入') {
@@ -140,7 +134,6 @@ const CustomLabelsLayer = ({
         }
         return (
           <g key={node.id}>
-            {/* ラベルの背景 */}
             <rect
               x={labelX}
               y={labelY}
@@ -150,7 +143,6 @@ const CustomLabelsLayer = ({
               rx={4}
               ry={4}
             />
-            {/* テキスト */}
             <text
               x={labelX + labelWidth / 2}
               y={labelY + labelHeight / 2 - 2}

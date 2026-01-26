@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { Main } from '@/components/uniformed/Main';
 import { politicianDataMap } from '@/data/uniformed/politician-data';
 import type { AccountingReports, Report } from '@/models/uniformed/type';
+import { Main } from './Main';
 
 type RouteParams = {
   politicianId: string;

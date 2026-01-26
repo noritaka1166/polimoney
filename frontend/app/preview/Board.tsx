@@ -1,9 +1,9 @@
 'use client';
 
 import { BoardMetadata } from '@/components/BoardMetadata';
+import { BoardSummary } from '@/components/BoardSummary';
 import { BoardTransactions } from '@/components/BoardTransactions';
-import { BoardSummary } from '@/components/uniformed/BoardSummary';
-import type { AccountingReports } from '@/models/uniformed/type';
+import type { AccountingReports } from '@/models/type';
 
 interface BoardProps {
   data: AccountingReports | null;
@@ -11,11 +11,10 @@ interface BoardProps {
 }
 
 export function Board({ data, politicianId }: BoardProps) {
-  if (!data) return;
+  if (!data) return null;
 
   const reportData = data.data.find((d) => d.report.id === data.latestReportId);
   if (!reportData) return null;
-
   return (
     <>
       <BoardSummary
@@ -23,8 +22,7 @@ export function Board({ data, politicianId }: BoardProps) {
         profile={data.profile}
         report={reportData.report}
         otherReports={data.data.map((d) => d.report)}
-        transactions={reportData.transactions}
-        categories={reportData.categories}
+        flows={reportData.flows}
         useFixedBoardChart={false}
       />
       <BoardTransactions

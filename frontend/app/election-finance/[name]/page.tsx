@@ -1,8 +1,8 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { notFound } from 'next/navigation';
-import { ElectionFinanceClient } from '@/components/election-finance/ElectionFinanceClient';
 import type { EfData } from '@/models/election-finance';
+import { ElectionFinanceClient } from './ElectionFinanceClient';
 
 type RouteParams = {
   name: string;

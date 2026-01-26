@@ -7,7 +7,6 @@ import { Board } from './Board';
 
 export function PreviewBoard() {
   const [data, setData] = useState<AccountingReports | null>(null);
-  // ✅ 1. politicianIdを保持するためのstateを追加
   const [politicianId, setPoliticianId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -17,13 +16,12 @@ export function PreviewBoard() {
       return;
     }
 
-    // ✅ 2. URLからpoliticianIdを抽出
     try {
       const path = new URL(urlString).pathname;
-      const filename = path.split('/').pop(); // "some-id.json"などを取得
+      const filename = path.split('/').pop();
       if (filename) {
         const id = filename.replace('.json', '');
-        setPoliticianId(id); // ✅ 3. politicianIdをstateにセット
+        setPoliticianId(id);
       }
     } catch (e) {
       console.error('Invalid URL for preview:', e);
@@ -31,7 +29,6 @@ export function PreviewBoard() {
       return;
     }
 
-    // データの取得処理
     fetch(urlString)
       .then((response) => response.json())
       .then((fetchedData: AccountingReports) => {
@@ -42,9 +39,8 @@ export function PreviewBoard() {
       });
   }, []);
 
-  // ✅ 4. dataとpoliticianIdが揃ったらBoardコンポーネントを描画
   if (!data || !politicianId) {
-    return null; // またはローディング表示など
+    return null;
   }
 
   return <Board data={data} politicianId={politicianId} />;

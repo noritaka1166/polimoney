@@ -117,13 +117,11 @@ export function TransactionSection({
   showType = false,
   usePublicExpenseAmount = false,
 }: TransactionSectionProps) {
-  // グラフ用データと詳細リスト用データを生成
   const { chartItems, groupedTransactions } = useMemo(() => {
     const grouped: Record<string, Transaction[]> = {};
     let items: ChartData[] = [];
 
     if (usePublicExpenseAmount) {
-      // 公費・自費の振り分け
       let publicTotal = 0;
       let privateTotal = 0;
 
@@ -148,7 +146,6 @@ export function TransactionSection({
         { id: '自費', label: '自費', value: privateTotal },
       ];
     } else {
-      // 通常のグルーピング
       const getKey = showType
         ? (t: Transaction) => t.type || t.category
         : (t: Transaction) => t.category;
@@ -166,13 +163,11 @@ export function TransactionSection({
       }));
     }
 
-    // 値の大きい順にソート
     items.sort((a, b) => b.value - a.value);
 
     return { chartItems: items, groupedTransactions: grouped };
   }, [transactions, usePublicExpenseAmount, showType]);
 
-  // 色のマッピング
   const colorMap = useMemo(
     () =>
       chartItems.reduce<Record<string, string>>((acc, item, idx) => {
@@ -182,7 +177,6 @@ export function TransactionSection({
     [chartItems],
   );
 
-  // 合計金額
   const totalAmount = useMemo(
     () => chartItems.reduce((sum, item) => sum + item.value, 0),
     [chartItems],

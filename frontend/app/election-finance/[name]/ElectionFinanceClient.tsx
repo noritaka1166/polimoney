@@ -5,12 +5,12 @@ import { Box, Heading, HStack, Stack, Text, VStack } from '@chakra-ui/react';
 import type { BarDatum } from '@nivo/bar';
 import { ResponsiveBar } from '@nivo/bar';
 import { BoardContainer } from '@/components/BoardContainer';
-import { TransactionSection } from '@/components/election-finance/TransactionSection';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { Notice } from '@/components/Notice';
 import type { EfData } from '@/models/election-finance';
 import { getCategoryJpName } from '@/utils/election-finance';
+import { TransactionSection } from './TransactionSection';
 
 function formatCurrency(amount: number): string {
   return amount.toLocaleString('ja-JP', {
@@ -24,7 +24,6 @@ export function ElectionFinanceClient({ data }: { data: EfData }) {
   const { isAuthenticated } = useAuth0();
   if (!isAuthenticated) return null;
 
-  // メタデータ、ソート済みトランザクションの取得
   const metadata = data.metadata;
   const transactions = [...data.transactions].sort((a, b) => {
     if (!a.date) return 1;
@@ -32,38 +31,30 @@ export function ElectionFinanceClient({ data }: { data: EfData }) {
     return new Date(b.date).getTime() - new Date(a.date).getTime();
   });
 
-  // 収入データ
   const incomeTransactions = transactions
     .filter((t) => t.category === 'income')
     .map((t) => ({ ...t, category: getCategoryJpName(t.category) }));
 
-  // 支出データ
   const expenseTransactions = transactions
     .filter((t) => t.category !== 'income')
     .map((t) => ({ ...t, category: getCategoryJpName(t.category) }));
 
-  // 支出データ（公費のみ）
   const expensePublicTransactions = transactions
     .filter((t) => t.category !== 'income')
     .filter((t) => t.public_expense_amount)
     .map((t) => ({ ...t, category: getCategoryJpName(t.category) }));
 
-  // 収入総計
   const totalIncome = incomeTransactions.reduce((acc, t) => acc + t.price, 0);
 
-  // 支出総計
   const totalExpense = expenseTransactions.reduce((acc, t) => acc + t.price, 0);
 
-  // 支出合計（公費のみ）
   const totalExpensePublic = expensePublicTransactions.reduce(
     (acc, t) => acc + (t.public_expense_amount || 0),
     0,
   );
 
-  // 繰越
   const carryover = totalIncome + totalExpensePublic - totalExpense;
 
-  // 積み上げグラフ色設定
   const barColorByKey: Record<string, string> = {
     収入: 'var(--chakra-colors-blue-400)',
     公費: 'var(--chakra-colors-purple-400)',
@@ -71,7 +62,6 @@ export function ElectionFinanceClient({ data }: { data: EfData }) {
     繰越額: 'var(--chakra-colors-green-400)',
   };
 
-  // 積み上げグラフデータ
   const barData: BarDatum[] = [
     {
       category: '支出',
@@ -80,9 +70,8 @@ export function ElectionFinanceClient({ data }: { data: EfData }) {
     },
     {
       category: '収入',
-      // グラフ表現は、支出に対して収入・公費がそれぞれどの程度充てられたかを表す
-      収入: totalIncome, // 寄付などの収入で賄った額
-      公費: totalExpensePublic, // 公費で賄った額
+      収入: totalIncome,
+      公費: totalExpensePublic,
     },
   ];
 
@@ -91,7 +80,6 @@ export function ElectionFinanceClient({ data }: { data: EfData }) {
       <Header />
 
       <VStack gap={6} align="stretch">
-        {/* ヘッダーセクション */}
         <BoardContainer>
           <Heading as="h1" size="2xl" mb={4}>
             選挙運動費用収支報告
@@ -184,14 +172,12 @@ export function ElectionFinanceClient({ data }: { data: EfData }) {
           </Stack>
         </BoardContainer>
 
-        {/* 支出セクション */}
         <TransactionSection
           title="支出目的で見る"
           transactions={expenseTransactions}
           badgeColorPalette="red"
         />
 
-        {/* 収入セクション */}
         <TransactionSection
           title="収入で見る"
           transactions={incomeTransactions}
@@ -199,7 +185,6 @@ export function ElectionFinanceClient({ data }: { data: EfData }) {
           showType={true}
         />
 
-        {/* 公費セクション */}
         <TransactionSection
           title="公費で見る"
           transactions={expenseTransactions}

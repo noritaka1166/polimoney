@@ -14,10 +14,10 @@ import html2canvas from 'html2canvas';
 import { LandmarkIcon } from 'lucide-react';
 import { useState } from 'react';
 import { BoardContainer } from '@/components/BoardContainer';
-import { BoardChart } from '@/components/uniformed/BoardChart';
-import { BoardChartFixed } from '@/components/uniformed/BoardChartFixed';
 import type { Category } from '@/data/uniformed/common';
 import type { Profile, Report, Transaction } from '@/models/uniformed/type';
+import { BoardChart } from './BoardChart';
+import { BoardChartFixed } from './BoardChartFixed';
 
 type Props = {
   politicianId: string;
@@ -40,10 +40,8 @@ export function BoardSummary({
 }: Props) {
   const [copied, setCopied] = useState(false);
 
-  // 現在のパスから現在のレポートIDを取得
   const currentReportId = report.id;
 
-  // 全てのレポート（現在のレポートと他のレポート）を結合（重複除去）し、年で降順ソート
   const allReports = [
     report,
     ...otherReports.filter((r) => r.id !== report.id),
@@ -51,7 +49,7 @@ export function BoardSummary({
   const sortedOtherReports = [...allReports].sort((a, b) => b.year - a.year);
   const handleCopyImage = async () => {
     const button = document.getElementById('copy-image-btn');
-    if (button) button.style.display = 'none'; // ボタンを非表示
+    if (button) button.style.display = 'none';
     const element = document.getElementById('summary');
     if (!element) return;
     const canvas = await html2canvas(element, { scale: 3 });
@@ -67,12 +65,11 @@ export function BoardSummary({
           alert('コピーに失敗しました');
         }
       }
-      if (button) button.style.display = ''; // ボタンを再表示
+      if (button) button.style.display = '';
     });
   };
   return (
     <BoardContainer id={'summary'}>
-      {/* プロフィール */}
       <Box mb={10}>
         <Stack
           direction={{ base: 'column', lg: 'row' }}
@@ -122,7 +119,6 @@ export function BoardSummary({
           </NativeSelect.Root>
         </Stack>
       </Box>
-      {/* タイトル */}
       <Box mb={5}>
         <HStack justify={'space-between'} alignItems={'center'}>
           <HStack fontSize={'xl'} fontWeight={'bold'}>
@@ -131,7 +127,6 @@ export function BoardSummary({
           </HStack>
         </HStack>
       </Box>
-      {/* サマリー */}
       <Box mb={5}>
         <SimpleGrid columns={{ base: 1, lg: 3 }} gap={5}>
           <Box
@@ -192,31 +187,6 @@ export function BoardSummary({
           </Box>
         </SimpleGrid>
       </Box>
-      {/* タブ */}
-      {/*<Box mb={5}>*/}
-      {/*  <Tabs.Root*/}
-      {/*    value={selectedTab}*/}
-      {/*    onValueChange={(e) => setSelectedTab(e.value)}*/}
-      {/*  >*/}
-      {/*    <Tabs.List>*/}
-      {/*      <Tabs.Trigger*/}
-      {/*        value="amount"*/}
-      {/*        fontWeight={'bold'}*/}
-      {/*        className={selectedTab === 'amount' ? 'income' : ''}*/}
-      {/*      >*/}
-      {/*        金額(円)*/}
-      {/*      </Tabs.Trigger>*/}
-      {/*      <Tabs.Trigger*/}
-      {/*        value="percentage"*/}
-      {/*        fontWeight={'bold'}*/}
-      {/*        className={selectedTab === 'percentage' ? 'income' : ''}*/}
-      {/*      >*/}
-      {/*        割合(%)*/}
-      {/*      </Tabs.Trigger>*/}
-      {/*    </Tabs.List>*/}
-      {/*  </Tabs.Root>*/}
-      {/*</Box>*/}
-      {/* チャート */}
       {useFixedBoardChart ? (
         <BoardChartFixed transactions={transactions} categories={categories} />
       ) : (
@@ -258,7 +228,6 @@ export function BoardSummary({
         >
           {copied ? (
             <span style={{ display: 'inline-flex', alignItems: 'center' }}>
-              {/* コピー済みアイコン（チェックマーク） */}
               <svg
                 width="28"
                 height="28"
@@ -309,7 +278,6 @@ export function BoardSummary({
             </span>
           ) : (
             <span style={{ display: 'inline-flex', alignItems: 'center' }}>
-              {/* コピーアイコン */}
               <svg
                 width="20"
                 height="20"

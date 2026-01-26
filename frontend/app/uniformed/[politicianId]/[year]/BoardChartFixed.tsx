@@ -32,7 +32,6 @@ type DataLink = {
 };
 
 export function BoardChartFixed({ transactions, categories }: Props) {
-  // Flowを生成（transactions優先、flowsはフォールバック）
   const computedFlows = useMemo(() => {
     if (!transactions || transactions.length === 0) {
       return [];
@@ -44,7 +43,6 @@ export function BoardChartFixed({ transactions, categories }: Props) {
     return flows;
   }, [transactions, categories]);
 
-  // flowsがない場合は空のデータを返す
   if (computedFlows.length === 0) {
     return (
       <Box w={'full'} h={'600px'}>
@@ -69,27 +67,24 @@ export function BoardChartFixed({ transactions, categories }: Props) {
           return null;
         }
 
-        // parentの名前からidを取得
         const parentFlow = computedFlows.find((f) => f.name === item.parent);
         if (!parentFlow) {
           return null;
         }
 
         if (item.direction === 'income') {
-          const link = {
+          return {
             source: item.id,
             target: parentFlow.id,
             value: item.value,
           };
-          return link;
         }
         if (item.direction === 'expense') {
-          const link = {
+          return {
             source: parentFlow.id,
             target: item.id,
             value: item.value,
           };
-          return link;
         }
         return null;
       })
@@ -130,13 +125,11 @@ const CustomLabelsLayer = ({
       {nodes.map((node) => {
         const nodeWidth = node.x1 - node.x0;
         const nodeHeight = node.y1 - node.y0;
-        // ラベル背景のサイズ計算
         const textPadding = 10;
         const approxCharWidth = 7;
         const labelWidth =
           node.label.length * approxCharWidth + textPadding * 2;
         const labelHeight = 30;
-        // ノードの右側または左側にラベルを配置するためのオフセット計算
         let labelX: number;
         let labelY: number;
         if (node.id === '総収入') {
@@ -151,7 +144,6 @@ const CustomLabelsLayer = ({
         }
         return (
           <g key={node.id}>
-            {/* ラベルの背景 */}
             <rect
               x={labelX}
               y={labelY}
@@ -161,7 +153,6 @@ const CustomLabelsLayer = ({
               rx={4}
               ry={4}
             />
-            {/* テキスト */}
             <text
               x={labelX + labelWidth / 2}
               y={labelY + labelHeight / 2 - 2}

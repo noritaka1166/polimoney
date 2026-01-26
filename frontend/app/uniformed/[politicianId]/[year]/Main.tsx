@@ -7,12 +7,12 @@ import { BoardTransactions } from '@/components/BoardTransactions';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { Notice } from '@/components/Notice';
-import { BoardSummary } from '@/components/uniformed/BoardSummary';
 import type {
   AccountingReports,
   Report,
   Transaction,
 } from '@/models/uniformed/type';
+import { BoardSummary } from './BoardSummary';
 
 interface Props {
   politicianId: string;
