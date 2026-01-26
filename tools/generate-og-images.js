@@ -65,9 +65,6 @@ async function captureGraph(slug) {
     }
 
     // 余白を追加
-    const padding = 40;
-    const width = Math.ceil(boundingBox.width + padding * 2);
-    const height = Math.ceil(boundingBox.height + padding * 2);
 
     // スクリーンショットを撮る
     const outputPath = path.join(
