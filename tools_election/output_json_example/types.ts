@@ -11,22 +11,22 @@
 
 /** 支出カテゴリコード */
 export type ExpenseCategoryCode =
-  | "personnel"      // 人件費
-  | "building"       // 家屋費
-  | "communication"  // 通信費
-  | "transportation" // 交通費
-  | "printing"       // 印刷費
-  | "advertising"    // 広告費
-  | "stationery"     // 文具費
-  | "food"           // 食糧費
-  | "lodging"        // 休泊費
-  | "miscellaneous"; // 雑費
+  | 'personnel' // 人件費
+  | 'building' // 家屋費
+  | 'communication' // 通信費
+  | 'transportation' // 交通費
+  | 'printing' // 印刷費
+  | 'advertising' // 広告費
+  | 'stationery' // 文具費
+  | 'food' // 食糧費
+  | 'lodging' // 休泊費
+  | 'miscellaneous'; // 雑費
 
 /** 収入カテゴリコード */
 export type IncomeCategoryCode =
-  | "income"       // 収入
-  | "donation"     // 寄附
-  | "other_income"; // その他の収入
+  | 'income' // 収入
+  | 'donation' // 寄附
+  | 'other_income'; // その他の収入
 
 /** すべてのカテゴリコード */
 export type CategoryCode = ExpenseCategoryCode | IncomeCategoryCode;
@@ -44,7 +44,7 @@ export type CategoryCode = ExpenseCategoryCode | IncomeCategoryCode;
  * - GM: 市区町村長選挙
  * - CM: 市区町村議会議員選挙
  */
-export type ElectionTypeCode = "HR" | "HC" | "PG" | "PA" | "GM" | "CM";
+export type ElectionTypeCode = 'HR' | 'HC' | 'PG' | 'PA' | 'GM' | 'CM';
 
 // ============================================
 // 収支タイプ
@@ -52,10 +52,10 @@ export type ElectionTypeCode = "HR" | "HC" | "PG" | "PA" | "GM" | "CM";
 
 /** 収支タイプ（日本語） */
 export type ExpenditureType =
-  | "選挙運動"
-  | "立候補準備のための支出"
-  | "寄附"
-  | "その他の収入";
+  | '選挙運動'
+  | '立候補準備のための支出'
+  | '寄附'
+  | 'その他の収入';
 
 // ============================================
 // データ型定義
@@ -165,7 +165,7 @@ export type ExpenseJournal = Journal & { category: ExpenseCategoryCode };
 
 /** 仕訳が収入かどうかを判定 */
 export function isIncomeJournal(journal: Journal): journal is IncomeJournal {
-  return ["income", "donation", "other_income"].includes(journal.category);
+  return ['income', 'donation', 'other_income'].includes(journal.category);
 }
 
 /** 仕訳が支出かどうかを判定 */

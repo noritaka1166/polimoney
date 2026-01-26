@@ -103,29 +103,29 @@ jobs:
 
 ## Next.js設定
 
-Next.jsの設定は`next.config.ts`ファイルで定義されており、静的サイト生成（SSG）のための設定が含まれています：
+Next.jsの設定は`frontend/next.config.ts`ファイルで定義されており、静的サイト生成（SSG）のための設定が含まれています：
 
 ```typescript
-// next.config.ts の概念的な例
+// frontend/next.config.ts の概念的な例
 import { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   // 出力を静的HTMLとJSファイルに
   output: 'export',
-  
+
   // ベースパスの設定（GitHub Pagesのリポジトリ名に対応）
   basePath: '/polimoney',
-  
+
   // 画像の最適化設定
   images: {
     unoptimized: true,
   },
-  
+
   // TypeScriptの厳格モード
   typescript: {
     ignoreBuildErrors: false,
   },
-  
+
   // 環境変数の設定
   env: {
     SITE_URL: 'https://digitaldemocracy2030.github.io/polimoney',
@@ -146,7 +146,7 @@ export default nextConfig;
 npm run build
 
 # 出力ディレクトリ
-./out/
+./frontend/out/
 ```
 
 ビルドプロセスでは以下の処理が行われます：
@@ -161,7 +161,7 @@ npm run build
 
 GitHub Actionsワークフローは、ビルドされた静的ファイルをGitHub Pagesにデプロイします：
 
-1. ビルド成果物（`./out/`ディレクトリ）をアップロード
+1. ビルド成果物（`./frontend/out/`ディレクトリ）をアップロード
 2. GitHub Pagesサービスにデプロイ
 3. カスタムドメイン設定の適用（設定されている場合）
 
@@ -179,7 +179,7 @@ https://digitaldemocracy2030.github.io/polimoney/
 
 1. サンキー図のスクリーンショットを撮影
 2. 政治家名と財務情報をオーバーレイ
-3. 最適化された画像を`public/og/`ディレクトリに保存
+3. 最適化された画像を`frontend/public/ogp/`ディレクトリに保存
 
 ```javascript
 // tools/generate-og-images.js の概念的な例
@@ -187,24 +187,24 @@ async function captureGraph(politician) {
   // ブラウザを起動
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
-  
+
   // サンキー図ページを読み込み
   await page.goto(`http://localhost:3000/${politician.slug}`);
-  
+
   // グラフ要素を待機
   await page.waitForSelector('.sankey-diagram');
-  
+
   // スクリーンショットを撮影
   const screenshot = await page.screenshot({
     clip: { x: 0, y: 0, width: 1200, height: 630 }
   });
-  
+
   // 画像を処理（テキストオーバーレイなど）
   const processedImage = await processImage(screenshot, politician);
-  
+
   // 画像を保存
-  await fs.writeFile(`public/og/${politician.slug}.png`, processedImage);
-  
+  await fs.writeFile(`frontend/public/ogp/${politician.slug}.png`, processedImage);
+
   await browser.close();
 }
 ```
@@ -280,7 +280,7 @@ gh run list --workflow=nextjs.yml --limit=5
 
 デプロイ後に404エラーが発生する場合は、以下を確認します：
 
-- `next.config.ts`の`basePath`設定
+- `frontend/next.config.ts`の`basePath`設定
 - 静的エクスポートの設定
 - ルーティング設定
 

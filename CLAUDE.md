@@ -8,7 +8,7 @@
   - 複雑なエラーの場合はo3に相談。
   - ルールやガイドラインに従う
   - 自分でできることは自分でやること。どうしてもユーザーにやってもらわないといけない作業は@@@@@@@@で前後に配置しはっきりわかるようにしろ
-  - gitにaddするときは git add . 
+  - gitにaddするときは git add .
   - 一時ファイルは.gitignoreに指定してaddされないように制御する
   - テストに失敗したときは仕様変更によってテストを変更するべきかコードが間違っているのか。慎重に判断して対応する
   - テスト結果を報告する時は成功数だけでなく失敗数もかならず報告すること
@@ -41,10 +41,10 @@ npm run build
 - **UI Library**: Chakra UI v3 with emotion
 - **Data Visualization**: Nivo charts (pie, sankey)
 - **Styling**: Global CSS with CSS-in-JS
-- **Type System**: Strict TypeScript with defined models in `models/type.d.ts`
+- **Type System**: Strict TypeScript with defined models in `frontend/models/type.d.ts`
 
 ### Python Tools
-- **PDF Processing**: pdf2image for converting political fund reports  
+- **PDF Processing**: pdf2image for converting political fund reports
 - **AI Analysis**: LangChain with Google Gemini API for extracting structured data from images
 - **Data Pipeline**: Download → PDF to Images → AI Analysis → JSON merge → Frontend conversion
 - **Dependency Management**: Poetry for Python package management

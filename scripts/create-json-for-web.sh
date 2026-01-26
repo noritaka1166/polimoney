@@ -5,7 +5,7 @@
 #   ./scripts/create-json-for-web.sh [-w work_dir] pdf_path output_json_path
 #
 # 使用例:
-#   ./scripts/create-json-for-web.sh hoge.pdf ./public/reports/hoge.json
+#   ./scripts/create-json-for-web.sh hoge.pdf ./frontend/public/reports/hoge.json
 #
 # パラメータ:
 #   pdf_path: PDFファイルのパス
@@ -54,4 +54,4 @@ merge_json_file=$work_dir/merged.json
 python tools/merge_jsons.py -i $tmpdir_json -o $merge_json_file
 
 # Merged JSON File => JSON File for Web
-npx tsx data/converter.ts -i $merge_json_file -o $output_json_path --ignore-errors
+npx tsx frontend/data/converter.ts -i $merge_json_file -o $output_json_path --ignore-errors
