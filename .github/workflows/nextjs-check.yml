@@ -62,12 +62,12 @@ jobs:
             yarn install
           fi
 
-      - name: Run lint
+      - name: Run check
         run: |
           if [ "${{ steps.detect-package-manager.outputs.manager }}" = "npm" ]; then
-            npm run lint
+            npm run check
           else
-            yarn run lint
+            yarn run check
           fi
       - name: Build
         run: |
