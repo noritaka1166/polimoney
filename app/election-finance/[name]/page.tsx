@@ -1,30 +1,20 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { notFound } from 'next/navigation';
-import { ElectionFinanceClient } from '@/components/election-finance/ElectionFinanceClient';
 import type { EfData } from '@/models/election-finance';
+import { ElectionFinanceClient } from './ElectionFinanceClient';
 
-export async function generateStaticParams() {
-  const dataDir = path.join(process.cwd(), 'data', 'election-finance');
-  try {
-    const files = await fs.readdir(dataDir);
-    return files
-      .filter((file) => file.startsWith('ef-') && file.endsWith('.json'))
-      .map((file) => ({
-        name: file.replace(/^ef-/, '').replace(/\.json$/, ''),
-      }));
-  } catch (error) {
-    console.error('Error reading election finance data directory:', error);
-    return [];
-  }
-}
+type RouteParams = {
+  name: string;
+};
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ name: string }>;
-}) {
-  const { name } = await params;
+type Props = PageProps<'/election-finance/[name]'> & {
+  params: Promise<RouteParams>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+};
+
+export default async function Page(props: Props) {
+  const { name } = await props.params;
 
   // Validate name to prevent directory traversal
   if (!/^[a-zA-Z0-9-]+$/.test(name)) {
